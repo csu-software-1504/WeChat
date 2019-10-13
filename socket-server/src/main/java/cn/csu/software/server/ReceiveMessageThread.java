@@ -4,7 +4,6 @@
 
 package cn.csu.software.server;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,9 +27,15 @@ public class ReceiveMessageThread implements Runnable {
 
     private MessageListener messageListener;
 
-    ReceiveMessageThread(@NotNull Socket socket) {
+    /**
+     * 有参构造函数
+     *
+     * @param socket 非空socket
+     */
+    ReceiveMessageThread( Socket socket) {
         this.socket = socket;
     }
+
     @Override
     public void run() {
         InputStream inputStream = null;

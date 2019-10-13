@@ -4,7 +4,6 @@
 
 package cn.csu.software.server;
 
-import com.sun.istack.internal.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,7 +27,12 @@ public class SocketThread implements ReceiveMessageThread.MessageListener, Runna
 
     private OutputStream outputStream;
 
-    public SocketThread(@NotNull Socket socket) {
+    /**
+     * 有参构造函数
+     *
+     * @param socket 非空socket
+     */
+    public SocketThread( Socket socket) {
         this.socket = socket;
     }
 
@@ -57,6 +61,8 @@ public class SocketThread implements ReceiveMessageThread.MessageListener, Runna
 
     @Override
     public void run() {
+        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        logger.info("path " + path);
         logger.info("successfully connect with " + socket.getInetAddress());
         ReceiveMessageThread receiveMessageThread = new ReceiveMessageThread(socket);
         receiveMessageThread.setMessageListener(this);

@@ -33,11 +33,22 @@ public class SocketClient implements ReceiveMessageThread.MessageListener {
 
     private Socket socket;
 
+    /**
+     * 有参构造函数
+     *
+     * @param socketHost socket server地址
+     * @param socketPort socket端口号
+     */
     public SocketClient(@NotNull String socketHost, @NotNull int socketPort) {
         this.socketHost = socketHost;
         this.socketPort = socketPort;
     }
 
+    /**
+     * 启动客户端
+     *
+     * @throws IOException 新建socket发生的IO异常
+     */
     public void startClient() throws IOException {
         socket = new Socket(socketHost, socketPort);
         logger.info("successfully connected to server: [" + socket.getInetAddress() + "]");

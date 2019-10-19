@@ -28,9 +28,15 @@ public class ReceiveMessageThread implements Runnable {
 
     private MessageListener messageListener;
 
+    /**
+     * 有参构造函数
+     *
+     * @param socket 非空socket
+     */
     ReceiveMessageThread(@NotNull Socket socket) {
         this.socket = socket;
     }
+
     @Override
     public void run() {
         InputStream inputStream = null;
@@ -65,6 +71,7 @@ public class ReceiveMessageThread implements Runnable {
             }
         }
     }
+
 
     public void setMessageListener(MessageListener messageListener) {
         this.messageListener = messageListener;

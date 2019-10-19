@@ -29,7 +29,7 @@ public class XmlUtil {
 
     private static final String USER_DIRECTORY = "user.dir";
 
-    private static final String CONFIG_PATH = "/socket-client/src/main/resources/config.xml";
+    private static final String CONFIG_PATH = "/src/main/resources/config.xml";
 
     /**
      * 获取Xml配置

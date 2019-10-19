@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-/**
+/**+
  * socket server入口
  *
  * @author huangjishun 874904407@qq.com
@@ -28,6 +28,11 @@ public class Main {
 
     private static int socketPort;
 
+    /**
+     * main 函数入口
+     *
+     * @param args 参数
+     */
     public static void main(String[] args) {
         socketHost = XmlUtil.getXmlConfig(SOCKET_HOST_CONFIG_NAME);
         try {

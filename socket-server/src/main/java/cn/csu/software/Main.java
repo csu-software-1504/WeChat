@@ -23,9 +23,15 @@ import java.util.concurrent.Executors;
 public class Main {
     private static Logger logger = LogManager.getLogger(Main.class.getSimpleName());
 
-    private static final int socketPort = 1504;
+    private static final int socketPort = 8888;
 
+    /**
+     * main 函数入口
+     *
+     * @param args 参数
+     */
     public static void main(String[] args) {
+        logger.info("server has been started, waiting for client connection");
         ExecutorService executorService = Executors.newCachedThreadPool();
         try {
             ServerSocket serverSocket = new ServerSocket(socketPort);

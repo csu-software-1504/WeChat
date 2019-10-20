@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F4F4F4">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#F4F4F4">
+
+            <ImageButton
+                android:id="@+id/bt_back"
+                android:layout_width="@dimen/x_32"
+                android:layout_height="@dimen/x_32"
+                android:layout_marginLeft="@dimen/x_16"
+                android:layout_marginTop="@dimen/x_32"
+                android:background="@mipmap/icon_back"/>
+            
+            <TextView
+                android:id="@+id/tv_receiver_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x_48"
+                android:layout_marginTop="@dimen/x_34"
+                android:textSize="@dimen/x_24"
+                android:textColor="#000000"
+                android:textStyle="bold"/>
+
+            <ImageButton
+                android:id="@+id/bt_point"
+                android:layout_width="@dimen/x_32"
+                android:layout_height="@dimen/x_32"
+                android:layout_marginLeft="@dimen/x_532"
+                android:layout_marginTop="@dimen/x_32"
+                android:background="@mipmap/icon_point"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x_1"
+                android:background="#EBEBEB"
+                android:layout_marginTop="@dimen/x_80"/>
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_chat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/x_80"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x_1150"
+            android:background="#F4F4F4">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x_1"
+                android:background="#EBEBEB"/>
+
+            <ImageButton
+                android:id="@+id/bt_voice"
+                android:layout_width="@dimen/x_40"
+                android:layout_height="@dimen/x_40"
+                android:layout_marginStart="@dimen/x_16"
+                android:layout_marginTop="@dimen/x_16"
+                android:background="@mipmap/icon_voice"/>
+
+            <EditText
+                android:id="@+id/et_input"
+                android:layout_width="@dimen/x_400"
+                android:layout_height="@dimen/x_50"
+                android:layout_marginStart="@dimen/x_68"
+                android:layout_marginTop="@dimen/x_12"
+                android:textAlignment="center"
+                android:background="#FFFFFF"/>
+
+            <ImageButton
+                android:id="@+id/bt_expression"
+                android:layout_width="@dimen/x_40"
+                android:layout_height="@dimen/x_40"
+                android:layout_marginStart="@dimen/x_480"
+                android:layout_marginTop="@dimen/x_16"
+                android:background="@mipmap/icon_expression"/>
+
+            <ImageButton
+                android:id="@+id/bt_more"
+                android:layout_width="@dimen/x_40"
+                android:layout_height="@dimen/x_40"
+                android:layout_marginLeft="@dimen/x_532"
+                android:layout_marginTop="@dimen/x_16"
+                android:background="@mipmap/icon_more"/>
+
+            <Button
+                android:id="@+id/bt_send"
+                android:layout_width="@dimen/x_92"
+                android:layout_height="@dimen/x_44"
+                android:layout_marginLeft="@dimen/x_480"
+                android:layout_marginTop="@dimen/x_13"
+                android:textColor="#ffffff"
+                android:background="@drawable/send_button_background"
+                android:text="@string/send"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
+</RelativeLayout>

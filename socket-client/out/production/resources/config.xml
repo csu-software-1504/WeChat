@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
+    <!--<socketHost>129.211.71.65</socketHost>-->
+    <!--<socketPort>7110</socketPort>-->
     <socketHost>127.0.0.1</socketHost>
-    <socketPort>1504</socketPort>
+    <socketPort>8888</socketPort>
 </config>

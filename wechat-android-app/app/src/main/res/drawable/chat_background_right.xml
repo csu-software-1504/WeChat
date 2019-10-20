@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#00DA27" /><!-- 背景色 -->
+    <corners android:topLeftRadius="6dp"
+        android:topRightRadius="6dp"
+        android:bottomRightRadius="6dp"
+        android:bottomLeftRadius="6dp"/><!-- 四个圆角的圆角大小 -->
+</shape>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">We Chat</string>
+    <string name="sign_in">sign in</string>
+    <string name="send">发送</string>
+    <string name="download_path">下载路径</string>
+    <string name="download">下载</string>
+    <string name="tab_name_message">消息</string>
+    <string name="tab_name_friend">通讯录</string>
+    <string name="tab_name_circle">发现</string>
+    <string name="tab_name_mine">我的</string>
+</resources>

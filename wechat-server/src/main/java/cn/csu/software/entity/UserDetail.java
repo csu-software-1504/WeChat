@@ -10,7 +10,10 @@ import java.sql.Date;
  * @title : cn.csu.software.common.entity
  * @author : oranges
  * @date : 2019/10/19 20:13
- * @description : 
+ * @description :
+ *  adminInGroup:  用户在群组中的身份: 0 普通用户
+ *                                   1 管理员
+ *                                   2 群主
  */
 public class UserDetail extends User {
 

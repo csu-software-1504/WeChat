@@ -2,12 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.csu.software.dao.UserDao">
 
+    <select id="selectCountEmail" resultType="int">
+        SELECT COUNT(*) FROM t_user WHERE email = #{email}
+    </select>
+
     <insert id="addUser" parameterType="cn.csu.software.entity.User">
-        INSERT INTO t_user(tel, password, username, pic, sex, status, createtime)
-        VALUES (#{user.tel}, #{user.password}, #{user.username}, #{user.pic}, #{user.sex}, #{user.status}, #{user.createDate})
+        INSERT INTO t_user(email, password, username, ip, avatar, sex, status, createtime)
+        VALUES (#{user.email}, #{user.password}, #{user.username}, #{user.ip}, #{user.avatar}, #{user.sex}, #{user.status}, #{user.createDate})
     </insert>
 
-    <select id="getUserByTelAndPassword" resultType="cn.csu.software.entity.User">
-        SELECT * FROM t_user WHERE tel = #{tel} AND password = #{password}
+    <update id="createUserFriendList">
+        CREATE TABLE IF NOT EXISTS t_user_friend_list_#{uid}(
+    	    `uid` INT(8) NOT NULL,
+    	    `addtime` DATE NOT NULL,
+            FOREIGN KEY (`uid`) REFERENCES t_user(`uid`)
+        ) CHARSET=utf8;
+    </update>
+
+    <update id="createUserGroupList">
+        CREATE TABLE IF NOT EXISTS t_user_group_list_#{uid}(
+            `uid` INT(8) NOT NULL,
+            `addtime` DATE NOT NULL,
+            FOREIGN KEY (`uid`) REFERENCES t_user(`uid`)
+        ) CHARSET=utf8;
+    </update>
+
+    <select id="getUidByEmail" resultType="int">
+        SELECT uid FROM t_user WHERE email = #{email}
+    </select>
+
+    <select id="getUserByEmailAndPassword" resultType="cn.csu.software.entity.User">
+        SELECT * FROM t_user WHERE email = #{email} AND password = #{password}
     </select>
 </mapper>

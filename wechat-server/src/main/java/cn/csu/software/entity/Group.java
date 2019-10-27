@@ -16,9 +16,11 @@ import java.util.List;
  */
 public class Group implements Serializable {
 
-    private static final long serialVersionUID = 7336583877281164372L;
+    private static final long serialVersionUID = 1468194116386741575L;
 
     private int groupId;
+
+    private String groupName;
 
     private int groupMasterUid;
 
@@ -42,6 +44,14 @@ public class Group implements Serializable {
 
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
     public int getGroupMasterUid() {

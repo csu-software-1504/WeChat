@@ -5,7 +5,10 @@ package cn.csu.software.service;/**
  */
 
 import cn.csu.software.dao.UserDao;
+import cn.csu.software.dto.RegisterUserDto;
+import cn.csu.software.dto.ResultDto;
 import cn.csu.software.entity.User;
+import cn.csu.software.util.LoggerUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,30 +23,41 @@ import java.sql.Date;
  * @description : 
  */
 @Service
-public class UserService {
+public class UserService implements LoggerUtil {
 
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     private UserDao userDao;
 
-    public User getUserByTelAndPwd(String tel, String password) {
-        logger.info("------tel={}, password={}", tel, password);
-        User user = userDao.getUserByTelAndPassword(tel, password);
-        logger.info("------user detail,uid={}", user.getUid());
-        return user;
+    public ResultDto loginService(String email, String password) {
+        User user = userDao.getUserByEmailAndPassword(email, password);
+        if (null == user) {
+            return ResultDto.FAIL("邮箱或密码错误，请重新输入");
+        } else {
+            return ResultDto.SUCCESS();
+        }
     }
 
-    public void addUser() {
-        User u = new User();
-        u.setTel("1");
-        u.setPassword("1");
-        u.setSex(1);
-        u.setStatus(1);
-        u.setPic("1");
-        u.setUsername("1");
-        Date date = new Date(System.currentTimeMillis());
-        u.setCreateDate(date);
-        userDao.addUser(u);
+    public ResultDto registerService(RegisterUserDto registerUserDto) {
+        int count = userDao.selectCountEmail(registerUserDto.getEmail());
+        if (count == 0) {
+            User user = new User();
+            user.setEmail(registerUserDto.getEmail());
+            user.setPassword(registerUserDto.getPassword());
+            user.setUsername(registerUserDto.getUsername());
+            user.setIp(registerUserDto.getIp());
+            user.setSex(registerUserDto.getSex());
+            user.setStatus(1);
+            user.setCreateDate(new Date(System.currentTimeMillis()));
+            user.setAvatar("默认头像");
+            userDao.addUser(user);
+            int uid = userDao.getUidByEmail(user.getEmail());
+            logger.info("------uid={}", uid);
+            userDao.createUserFriendList(uid);
+            return ResultDto.SUCCESS("注册成功");
+        } else {
+            return ResultDto.FAIL("该邮箱已被注册");
+        }
     }
 }

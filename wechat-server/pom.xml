@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.2.0.RELEASE</version>
+		<version>1.5.3.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>cn.csu.software</groupId>
@@ -51,6 +51,51 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
+		</dependency>
+
+		<!-- resteasy相关 -->
+		<dependency>
+			<groupId>com.paypal.springboot</groupId>
+			<artifactId>resteasy-spring-boot-starter</artifactId>
+			<version>2.3.2-RELEASE</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.resteasy</groupId>-->
+			<!--<artifactId>resteasy-jaxrs</artifactId>-->
+			<!--<version>3.9.0.Final</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.resteasy</groupId>-->
+			<!--<artifactId>resteasy-servlet-initializer</artifactId>-->
+			<!--<version>4.3.0.Final</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.resteasy</groupId>-->
+			<!--<artifactId>resteasy-jaxb-provider</artifactId>-->
+			<!--<version>4.3.0.Final</version>-->
+		<!--</dependency>-->
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.resteasy</groupId>-->
+			<!--<artifactId>resteasy-spring</artifactId>-->
+			<!--<version>4.3.0.Final</version>-->
+		<!--</dependency>-->
+
+		<!--Json-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.2.62</version>
+		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20190722</version>
 		</dependency>
 	</dependencies>
 

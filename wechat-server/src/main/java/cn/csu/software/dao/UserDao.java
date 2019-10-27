@@ -17,11 +17,23 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserDao {
 
-    public void addUser(@Param("user") User user);
+    public int selectCountEmail(@Param("email") String email);
+
+    public int addUser(@Param("user") User user);
+
+    public void createUserFriendList(@Param("uid") int user);
+
+    public void createUserGroupList(@Param("uid") int user);
 
 //    public void deleteUserByUid(@Param("uid") int uid);
 //
-//    public void changeUserInfo(@Param("user") User user);
+//    public void deleteUserByTel(@Param("uid") String uid);
+//
+//    public void updateUserInfo(@Param("user") User user);
 
-    public User getUserByTelAndPassword(@Param("tel") String tel, @Param("password") String password);
+    public User getUserByEmailAndPassword(@Param("email") String email, @Param("password") String password);
+
+    public int getUidByEmail(@Param("email") String email);
+
+//    public User getUserByUid(@Param("uid") int uid);
 }

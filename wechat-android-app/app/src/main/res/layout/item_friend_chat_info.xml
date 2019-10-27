@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_friend_avatar"
+        android:layout_width="@dimen/x_80"
+        android:layout_height="@dimen/x_80"
+        android:layout_marginStart="@dimen/x_10"
+        android:layout_marginTop="@dimen/x_10"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/x_110">
+
+        <TextView
+            android:id="@+id/tv_friend_name"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_40"
+            android:layout_marginTop="@dimen/x_20"
+            android:textSize="@dimen/x_24"
+            android:textColor="#000000"/>
+
+        <TextView
+            android:id="@+id/tv_friend_message"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_40"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/x_45"
+            android:textSize="@dimen/x_15"
+            android:textColor="#B0B0B0"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_1"
+            android:layout_marginTop="@dimen/x_100"
+            android:background="#D8D8D8" />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

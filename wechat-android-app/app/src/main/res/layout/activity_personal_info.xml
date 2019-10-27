@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F4F4F4"
+    tools:context="cn.csu.software.wechat.MainActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffff">
+
+        <ImageView
+            android:id="@+id/iv_personal_avatar"
+            android:layout_width="@dimen/x_100"
+            android:layout_height="@dimen/x_100"
+            android:layout_marginStart="@dimen/x_30"
+            android:layout_marginTop="@dimen/x_40"
+            android:layout_marginBottom="@dimen/x_10"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/x_150">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x_40"
+                android:layout_marginTop="@dimen/x_60"
+                android:textSize="@dimen/x_22"
+                android:textColor="#000000"/>
+
+            <TextView
+                android:id="@+id/tv_account"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x_40"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/x_80"
+                android:textSize="@dimen/x_14"
+                android:textColor="#B0B0B0"/>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_1"
+            android:background="#D8D8D8"
+            android:layout_marginTop="@dimen/x_160"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x_10"
+        android:background="#ffffff">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_1"
+            android:background="#D8D8D8"/>
+
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x_40"
+                android:layout_marginTop="@dimen/x_20"
+                android:textSize="@dimen/x_20"
+                android:textColor="#000000"
+                android:gravity="center_horizontal"
+                android:text="设置备注和标签"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x_1"
+                android:background="#D8D8D8"
+                android:layout_marginTop="@dimen/x_70"/>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_send_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x_10"
+        android:background="#ffffff">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_1"
+            android:background="#D8D8D8"/>
+
+        <TextView
+            android:id="@+id/tv_send_message"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_40"
+            android:layout_marginTop="@dimen/x_20"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/x_20"
+            android:textColor="#000000"
+            android:text="发消息"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_1"
+            android:background="#D8D8D8"
+            android:layout_marginTop="@dimen/x_70"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

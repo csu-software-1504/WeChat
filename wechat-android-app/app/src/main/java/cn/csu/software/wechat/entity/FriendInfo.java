@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2019 cn.csu.software. All rights reserved.
  */
 
-package cn.csu.software.wechat.bean;
+package cn.csu.software.wechat.entity;
 
 /**
  * 好友信息

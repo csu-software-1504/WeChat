@@ -23,12 +23,15 @@ public class FriendChatInfoContent implements BaseColumns {
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITIES + "/friend_chat_info");
 
-    public static final String WECHAT_FRIEND_NAME = "friend_name";
+    public static final String ACCOUNT = "account";
 
-    public static final String WECHAT_FRIEND_AVATAR_PATH = "friend_avatar_path";
+    public static final String USERNAME = "username";
 
-    public static final String WECHAT_FRIEND_MESSAGE = "friend_message";
+    public static final String AVATAR_PATH = "avatar_path";
 
-    // 默认的排序方法
-    public static final String DEFAULT_SORT_ORDER = "_id desc";
+    public static final String LAST_MESSAGE = "last_message";
+
+    public static final String LAST_MESSAGE_SEND_TIME = "last_message_send_time";
+
+    public static final String SORT_ORDER_DESC = "desc";
 }

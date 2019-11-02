@@ -2,13 +2,15 @@
  * Copyright (c) 2019-2019 cn.csu.software. All rights reserved.
  */
 
-package cn.csu.software.client;
+package cn.csu.software.wechat.client;
 
+import cn.csu.software.wechat.entity.SocketData;
 import com.sun.istack.internal.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
@@ -24,8 +26,6 @@ import java.util.concurrent.Executors;
  */
 public class SocketClient implements ReceiveMessageThread.MessageListener {
     private Logger logger = LogManager.getLogger(ReceiveMessageThread.class.getSimpleName());
-
-    private static final int WRITE_LENGTH = 8;
 
     private String socketHost;
 
@@ -60,25 +60,29 @@ public class SocketClient implements ReceiveMessageThread.MessageListener {
     }
 
     private void sendMessage() throws IOException {
-        OutputStream outputStream = socket.getOutputStream();
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(this.socket.getOutputStream());
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
-            String message = scanner.nextLine();
-            if ("break".equals(message)) {
-                outputStream.close();
+            String msg = scanner.nextLine();
+            if ("".equals(msg)) {
+                continue;
+            }
+            if ("break".equals(msg)) {
+                objectOutputStream.close();
                 socket.close();
                 break;
             }
-            byte[] messageByte = message.getBytes(StandardCharsets.UTF_8);
-            int messageLength = messageByte.length;
-            outputStream.write(messageLength >> WRITE_LENGTH);
-            outputStream.write(messageLength);
-            outputStream.write(messageByte);
+            SocketData socketData = new SocketData();
+            socketData.setTextMessage(msg);
+            socketData.setMessageType(0);
+            socketData.setSenderAccount(00);
+            socketData.setReceiverAccount(00);
+            objectOutputStream.writeObject(socketData);
         }
     }
 
     @Override
-    public void onMessageListener(String message) {
-        logger.info("get message from [" + socket.getInetAddress() + "]: " + message);
+    public void onMessageListener(SocketData socketData) {
+        logger.info("get message from [" + socket.getInetAddress() + "]: " + socketData.toString());
     }
 }

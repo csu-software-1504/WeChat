@@ -4,7 +4,10 @@
 
 package cn.csu.software.wechat.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,12 +21,10 @@ import android.widget.TextView;
 
 import cn.csu.software.wechat.adapter.FriendChatInfoAdapter;
 import cn.csu.software.wechat.R;
-import cn.csu.software.wechat.bean.FriendChatInfo;
+import cn.csu.software.wechat.entity.FriendChatInfo;
 import cn.csu.software.wechat.constant.ConstantData;
-import cn.csu.software.wechat.database.helper.FriendChatInfoDatabaseHelper;
-import cn.csu.software.wechat.util.LogUtil;
+import cn.csu.software.wechat.data.FriendChatInfoData;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -34,6 +35,8 @@ import java.util.List;
  */
 public class TabMessageFragment extends Fragment {
     private static final String TAG = TabMessageFragment.class.getSimpleName();
+
+    private static String sTabName;
 
     private RecyclerView mRecyclerView;
 
@@ -47,14 +50,12 @@ public class TabMessageFragment extends Fragment {
 
     private TextView mTabNameTextView;
 
-    private static String mTabName;
-
-    private FriendChatInfoDatabaseHelper mDatabaseHelper;
-
     private List<FriendChatInfo> mFriendChatInfoList;
 
+    private MessageBroadcastReceiver mMessageBroadcastReceiver;
+
     public static TabMessageFragment newInstance(String content){
-        mTabName = content;
+        sTabName = content;
         return new TabMessageFragment();
     }
 
@@ -64,14 +65,33 @@ public class TabMessageFragment extends Fragment {
         mContext = getActivity();
         mView = inflater.inflate(R.layout.fragment_tab_message, container, false);
         initView();
-        initDatabaseHelper();
-        readSQLite();
+        refreshData();
         return mView;
+    }
+
+    private void RegisterMessageBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConstantData.RECEIVED_MESSAGE_BROADCAST);
+        mMessageBroadcastReceiver = new MessageBroadcastReceiver();
+        mContext.registerReceiver(mMessageBroadcastReceiver, intentFilter);
+    }
+
+    @Override
+    public void onResume() {
+        refreshData();
+        RegisterMessageBroadcastReceiver();
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mContext.unregisterReceiver(mMessageBroadcastReceiver);
+        super.onPause();
     }
 
     private void initView() {
         mTabNameTextView = mView.findViewById(R.id.tv_tab_name);
-        mTabNameTextView.setText(mTabName);
+        mTabNameTextView.setText(sTabName);
         mAdapter = new FriendChatInfoAdapter(mContext);
         mLayoutManager = new LinearLayoutManager(mContext);
         mLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -80,46 +100,14 @@ public class TabMessageFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    public void onPause() {
-        LogUtil.e(TAG, "close database");
-        mDatabaseHelper.closeLink();
-        mDatabaseHelper.close();
-        super.onPause();
+    private void refreshData() {
+        mAdapter.refreshItems(FriendChatInfoData.getUserInfoList());
     }
 
-    private void initDatabaseHelper() {
-        mDatabaseHelper = FriendChatInfoDatabaseHelper.getInstance(mContext,
-            ConstantData.DATABASE_CREATE_VISION_SECOND_TIME);
-        mDatabaseHelper.openReadLink();
-        mDatabaseHelper.openWriteLink();
-    }
-
-    private void readSQLite() {
-        if (mDatabaseHelper == null) {
-            LogUtil.e(TAG, "database helper is null");
-            return;
-        }
-        mFriendChatInfoList = mDatabaseHelper.query(ConstantData.GLOBAL_QUERY_CONDITION);
-        if (mFriendChatInfoList.size() == 0) {
-            initData();
-        } else {
-            for (FriendChatInfo friendChatInfo : mFriendChatInfoList) {
-                mAdapter.addItem(friendChatInfo);
-            }
-        }
-    }
-
-    private void initData() {
-        for (int i = 0; i < ConstantData.EXAMPLE_FRIEND_NAME.length; i++) {
-            FriendChatInfo friendChatInfo = new FriendChatInfo();
-            friendChatInfo.setFriendName(ConstantData.EXAMPLE_FRIEND_NAME[i]);
-            friendChatInfo.setFriendLastMessage(ConstantData.EXAMPLE_LAST_MESSAGE_HEADER
-                + ConstantData.EXAMPLE_FRIEND_NAME[i]);
-            friendChatInfo.setFriendAvatarPath(mContext.getFilesDir().getPath()+ File.separator
-                + ConstantData.PHOTO_DIRECTORY + File.separator + ConstantData.AVATAR_DIRECTORY
-                + File.separator + ConstantData.EXAMPLE_AVATAR_NAME[i] + ConstantData.EXAMPLE_EXTENSION_NAME);
-            mAdapter.addItem(friendChatInfo);
+    class MessageBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshData();
         }
     }
 }

@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2019 cn.csu.software. All rights reserved.
  */
 
-package cn.csu.software.wechat.bean;
+package cn.csu.software.wechat.entity;
 
 import java.io.Serializable;
 
@@ -15,9 +15,9 @@ import java.io.Serializable;
 public class SocketData implements Serializable {
     private static final long serialVersionUID = 2360664973707770902L;
 
-    private String receiverAccount;
+    private int receiverAccount;
 
-    private String senderAccount;
+    private int senderAccount;
 
     private int messageType;
 
@@ -25,19 +25,31 @@ public class SocketData implements Serializable {
 
     private byte[] bytes;
 
-    public String getReceiverAccount() {
+    public SocketData() {
+        bytes = new byte[0];
+    }
+
+    public SocketData(int receiverAccount, int senderAccount, int messageType, String textMessage, byte[] bytes) {
+        this.receiverAccount = receiverAccount;
+        this.senderAccount = senderAccount;
+        this.messageType = messageType;
+        this.textMessage = textMessage;
+        this.bytes = bytes;
+    }
+
+    public int getReceiverAccount() {
         return receiverAccount;
     }
 
-    public void setReceiverAccount(String receiverAccount) {
+    public void setReceiverAccount(int receiverAccount) {
         this.receiverAccount = receiverAccount;
     }
 
-    public String getSenderAccount() {
+    public int getSenderAccount() {
         return senderAccount;
     }
 
-    public void setSenderAccount(String senderAccount) {
+    public void setSenderAccount(int senderAccount) {
         this.senderAccount = senderAccount;
     }
 
@@ -63,5 +75,11 @@ public class SocketData implements Serializable {
 
     public void setBytes(byte[] bytes) {
         this.bytes = bytes;
+    }
+
+    public String toString() {
+        return "receiver account: " + getReceiverAccount() + "\n" + "sender account: " + getSenderAccount() + "\n"
+                + "message type: " + getMessageType() + "\n" + "text message: " + getTextMessage() + "\n"
+                + "bytes length: " + getBytes().length;
     }
 }

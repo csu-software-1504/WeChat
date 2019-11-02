@@ -33,7 +33,7 @@ public class BitmapUtil {
         File file = new File(imagePath);
         FileOutputStream out = null;
         try {
-             out = new FileOutputStream(file);
+            out = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
             out.flush();
         } catch (IOException e) {

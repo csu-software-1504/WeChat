@@ -23,9 +23,15 @@ public class ChatMessageContent implements BaseColumns {
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITIES + "/chat_message");
 
+    public static final String SENDER_ACCOUNT = "sender_account";
+
     public static final String SENDER_NAME = "sender_name";
 
+    public static final String RECEIVER_ACCOUNT = "receiver_account";
+
     public static final String RECEIVER_NAME = "receiver_name";
+
+    public static final String UNREAD_MESSAGE_COUNT = "unread_message_Count";
 
     public static final String AVATAR_PATH = "avatar_path";
 
@@ -39,6 +45,5 @@ public class ChatMessageContent implements BaseColumns {
 
     public static final String CHAT_MESSAGE_VIDEO_PATH = "chat_message_video_path";
 
-    // 默认的排序方法
-    public static final String DEFAULT_SORT_ORDER = "_id desc";
+    public static final String SORT_ORDER_DESC = "desc";
 }

@@ -50,10 +50,26 @@
             android:layout_centerHorizontal="true" />
 
         <Button
-            android:id="@+id/bt_download"
+            android:id="@+id/normal_broadcast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/x_200"
             android:layout_centerHorizontal="true"
-            android:text="@string/download" />
+            android:text="normal" />
+
+    <Button
+        android:id="@+id/order_broadcast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x_300"
+        android:layout_centerHorizontal="true"
+        android:text="order" />
+
+    <Button
+        android:id="@+id/local_broadcast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x_400"
+        android:layout_centerHorizontal="true"
+        android:text="local" />
 </RelativeLayout>

@@ -23,6 +23,6 @@ jar {        // 生成jar包
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
     manifest { // 配置 Manifest文档属性
-        attributes 'Main-Class': 'cn.csu.software.Main' // 程序入口
+        attributes 'Main-Class': 'cn.csu.software.wechat.Main' // 程序入口
     }
 }

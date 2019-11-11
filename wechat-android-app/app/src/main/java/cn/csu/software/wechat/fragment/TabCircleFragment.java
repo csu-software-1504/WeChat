@@ -4,7 +4,10 @@
 
 package cn.csu.software.wechat.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +19,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import cn.csu.software.wechat.R;
+import cn.csu.software.wechat.entity.UserInfo;
+import cn.csu.software.wechat.constant.ConstantData;
+import cn.csu.software.wechat.util.LogUtil;
 
 /**
  * 消息界面
@@ -31,7 +37,11 @@ public class TabCircleFragment extends Fragment implements View.OnClickListener 
 
     private TextView mDownloadPathTextView;
 
-    private Button mDownloadButton;
+    private Button mNormalButton;
+
+    private Button mLocalButton;
+
+    private Button mOrderButton;
 
     private Context mContext;
 
@@ -40,6 +50,8 @@ public class TabCircleFragment extends Fragment implements View.OnClickListener 
     private TextView mTabNameTextView;
 
     private static String mTabName;
+
+    private BroadcastReceiver receiver;
 
     public static TabCircleFragment newInstance(String content){
         Bundle arguments = new Bundle();
@@ -59,26 +71,54 @@ public class TabCircleFragment extends Fragment implements View.OnClickListener 
         mTabNameTextView = mView.findViewById(R.id.tv_tab_name);
         mTabNameTextView.setText(mTabName);
         mDownloadPathTextView.setText(DOWNLOAD_PATH);
-        mDownloadButton = mView.findViewById(R.id.bt_download);
-        mDownloadButton.setOnClickListener(this);
+        mNormalButton = mView.findViewById(R.id.normal_broadcast);
+        mNormalButton.setOnClickListener(this);
+        mLocalButton = mView.findViewById(R.id.local_broadcast);
+        mLocalButton.setOnClickListener(this);
+        mOrderButton = mView.findViewById(R.id.order_broadcast);
+        mOrderButton.setOnClickListener(this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction("cn.csu.software.normal.broadcast");
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                LogUtil.e(TAG, "BroadcastService接收到了广播");
+                Intent intent1 = new Intent();
+                intent1.putExtra(ConstantData.EXTRA_USER_INFO, new UserInfo());
+                intent1.setClassName(ConstantData.PACKAGE_NAME, intent.getStringExtra("activity"));
+                context.startActivity(intent);
+            }
+        };
+        mContext.registerReceiver(receiver, intentFilter);
         return mView;
     }
 
     @Override
     public void onClick(View view) {
-        /*DownloadUtil.get(mContext).download(DOWNLOAD_PATH, "download", new DownloadUtil.OnDownloadListener() {
-            @Override
-            public void onDownloadSuccess() {
-                LogUtil.i(TAG, "download success");
-            }
-            @Override
-            public void onDownloading(int progress) {
-                LogUtil.i(TAG, "downloading");
-            }
-            @Override
-            public void onDownloadFailed() {
-                LogUtil.i(TAG,  "download failed");
-            }
-        });*/
+        if (view.getId() == R.id.normal_broadcast) {
+            LogUtil.i(TAG, "send normal broadcast");
+            Intent intent = new Intent("com.example.normal.receiver");
+            intent.putExtra("activity", ConstantData.ACTIVITY_CLASS_NAME_CHAT);
+            mContext.sendBroadcast(intent);
+        } else if (view.getId() == R.id.order_broadcast){
+            Intent intent = new Intent("cn.csu.software.order.broadcast");
+            intent.putExtra("activity", ConstantData.ACTIVITY_CLASS_NAME_PERSONAL_INFO);
+            mContext.sendOrderedBroadcast(intent, null);
+        } else {
+            Intent intent = new Intent("cn.csu.software.local.broadcast");
+            intent.putExtra("activity", ConstantData.ACTIVITY_CLASS_NAME_PERSONAL_INFO);
+            mContext.sendBroadcast(intent);
+        }
+    }
+
+    class LowBroadcast extends BroadcastReceiver {
+        private final String TAG = LowBroadcast.class.getSimpleName();
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            LogUtil.i(TAG, "low receiver the broadcast");
+//        Intent intent1 = new Intent();
+//        intent.setClassName(ConstantData.PACKAGE_NAME, intent.getStringExtra("activity"));
+//        context.startActivity(intent);
+        }
     }
 }

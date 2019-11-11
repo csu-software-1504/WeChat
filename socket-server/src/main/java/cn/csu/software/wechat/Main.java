@@ -2,9 +2,9 @@
  * Copyright (c) 2019-2019 cn.csu.software. All rights reserved.
  */
 
-package cn.csu.software;
+package cn.csu.software.wechat;
 
-import cn.csu.software.server.SocketThread;
+import cn.csu.software.wechat.server.SocketThread;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

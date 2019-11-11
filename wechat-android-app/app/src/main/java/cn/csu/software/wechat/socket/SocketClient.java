@@ -4,12 +4,12 @@
 
 package cn.csu.software.wechat.socket;
 
+import cn.csu.software.wechat.entity.SocketData;
 import cn.csu.software.wechat.util.LogUtil;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 
 /**
  * 客户端线程
@@ -22,11 +22,13 @@ public class SocketClient implements Runnable, ReceiveMessageThread.MessageListe
 
     private Socket socket;
 
-    private OutputStream outputStream;
+    private ObjectOutputStream objectOutputStream;
 
     private SocketClientListener socketClientListener;
 
     private static final String SERVER_HOST = "129.211.71.65";
+
+//  private static final String SERVER_HOST = "192.168.10.200";
 
     private static final int SERVER_PORT = 7110;
 
@@ -41,7 +43,7 @@ public class SocketClient implements Runnable, ReceiveMessageThread.MessageListe
 
     public void close() {
         try {
-            outputStream.close();
+            objectOutputStream.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -49,27 +51,22 @@ public class SocketClient implements Runnable, ReceiveMessageThread.MessageListe
 
     }
 
-    public void sendMessage(String message) throws IOException {
-        byte[] msgBytes = message.getBytes(StandardCharsets.UTF_8);
-        int length = msgBytes.length;
-        LogUtil.i(TAG, "message: %s", message);
-        outputStream.write(length >> 8);
-        outputStream.write(length);
-        outputStream.write(msgBytes);
+    public void sendMessage(SocketData socketData) throws IOException {
+        objectOutputStream.writeObject(socketData);
     }
 
     @Override
-    public void onMessageListener(String msg) {
-        socketClientListener.onSocketClientListener(msg);
+    public void onMessageListener(SocketData socketData) {
+        socketClientListener.onSocketClientListener(socketData);
     }
 
     @Override
     public void run() {
         try {
             socket = new Socket(SERVER_HOST, SERVER_PORT);
-            outputStream = socket.getOutputStream();
+            objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            LogUtil.e(TAG, "start socket error");
+            LogUtil.e(TAG, "start socket error:  %s", e);
         }
         LogUtil.i(TAG, "successful connected to server: %s", socket.getInetAddress());
         ReceiveMessageThread receiveMessageThread = new ReceiveMessageThread(this.socket);
@@ -84,6 +81,6 @@ public class SocketClient implements Runnable, ReceiveMessageThread.MessageListe
     }
 
     public interface SocketClientListener {
-        void onSocketClientListener(String msg);
+        void onSocketClientListener(SocketData socketData);
     }
 }

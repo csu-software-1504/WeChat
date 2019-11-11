@@ -35,6 +35,4 @@
             android:layout_marginEnd="@dimen/x_16"/>
     </RelativeLayout>
 
-
-
 </RelativeLayout>

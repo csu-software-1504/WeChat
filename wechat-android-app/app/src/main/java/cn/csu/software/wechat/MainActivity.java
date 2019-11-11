@@ -5,6 +5,7 @@
 package cn.csu.software.wechat;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,11 +14,15 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import cn.csu.software.wechat.constant.ConstantData;
+import cn.csu.software.wechat.data.ChatMessageData;
+import cn.csu.software.wechat.data.FriendChatInfoData;
+import cn.csu.software.wechat.data.UserInfoData;
 import cn.csu.software.wechat.fragment.TabMessageFragment;
 import cn.csu.software.wechat.fragment.TabCircleFragment;
 import cn.csu.software.wechat.fragment.TabFriendFragment;
 import cn.csu.software.wechat.fragment.TabMineFragment;
 import cn.csu.software.wechat.fragment.adapter.WeChatFragmentPagerAdapter;
+import cn.csu.software.wechat.service.SocketService;
 import cn.csu.software.wechat.util.BitmapUtil;
 import cn.csu.software.wechat.util.FileProcessUtil;
 import cn.csu.software.wechat.util.LogUtil;
@@ -32,7 +37,7 @@ import java.util.Objects;
  * @author huangjishun 874904407@qq.com
  * @since 2019-10-19
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TabLayout.BaseOnTabSelectedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private TabLayout mTabLayout;
@@ -53,6 +58,22 @@ public class MainActivity extends AppCompatActivity {
         createFileDirectory();
         initView();
         initTab();
+        initData();
+        startSocketService();
+    }
+
+    private void initData() {
+        UserInfoData.initDatabaseHelper(mContext);
+        UserInfoData.queryAllFriendChatInfo();
+        FriendChatInfoData.initDatabaseHelper(mContext);
+        FriendChatInfoData.queryAllFriendChatInfo();
+        ChatMessageData.initDatabaseHelper(mContext);
+        ChatMessageData.queryChatMessage();
+    }
+
+    private void startSocketService() {
+        Intent intent = new Intent(mContext, SocketService.class);
+        startService(intent);
     }
 
     private void initView() {
@@ -77,10 +98,12 @@ public class MainActivity extends AppCompatActivity {
         mPagerAdapter = new WeChatFragmentPagerAdapter(mFragments, getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
 
-        Objects.requireNonNull(mTabLayout.getTabAt(0)).setIcon(R.mipmap.icon_message_normal);
+        Objects.requireNonNull(mTabLayout.getTabAt(0)).setIcon(R.mipmap.icon_message_select);
         Objects.requireNonNull(mTabLayout.getTabAt(1)).setIcon(R.mipmap.icon_friend_normal);
         Objects.requireNonNull(mTabLayout.getTabAt(2)).setIcon(R.mipmap.icon_circle_normal);
         Objects.requireNonNull(mTabLayout.getTabAt(3)).setIcon(R.mipmap.icon_mine_normal);
+
+        mTabLayout.addOnTabSelectedListener(this);
     }
 
     private void createFileDirectory() {
@@ -93,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
         }
         String avatarPath = mContext.getFilesDir().getPath() + File.separator + ConstantData.PHOTO_DIRECTORY
             + File.separator + ConstantData.AVATAR_DIRECTORY;
+        LogUtil.i(TAG, mContext.getFilesDir().getPath());
         if (!FileProcessUtil.isExist(avatarPath)) {
             if (FileProcessUtil.createDirectory(avatarPath)) {
                 LogUtil.i(TAG, "create avatar directory success");
@@ -116,4 +140,48 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onTabSelected(TabLayout.Tab tab) {
+        switch (tab.getPosition()) {
+            case 0:
+                tab.setIcon(R.mipmap.icon_message_select);
+                break;
+            case 1:
+                tab.setIcon(R.mipmap.icon_friend_select);
+                break;
+            case 2:
+                tab.setIcon(R.mipmap.icon_circle_select);
+                break;
+            case 3:
+                tab.setIcon(R.mipmap.icon_mine_select);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onTabUnselected(TabLayout.Tab tab) {
+        switch (tab.getPosition()) {
+            case 0:
+                tab.setIcon(R.mipmap.icon_message_normal);
+                break;
+            case 1:
+                tab.setIcon(R.mipmap.icon_friend_normal);
+                break;
+            case 2:
+                tab.setIcon(R.mipmap.icon_circle_normal);
+                break;
+            case 3:
+                tab.setIcon(R.mipmap.icon_mine_normal);
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onTabReselected(TabLayout.Tab tab) {
+
+    }
 }

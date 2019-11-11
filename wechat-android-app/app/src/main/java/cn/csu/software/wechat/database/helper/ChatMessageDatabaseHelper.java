@@ -13,7 +13,8 @@ import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
 
-import cn.csu.software.wechat.bean.ChatMessage;
+import cn.csu.software.wechat.entity.ChatMessage;
+import cn.csu.software.wechat.database.content.ChatMessageContent;
 import cn.csu.software.wechat.util.LogUtil;
 
 /**
@@ -94,12 +95,19 @@ public class ChatMessageDatabaseHelper extends SQLiteOpenHelper {
         LogUtil.i(TAG, "drop_sql:" + drop_sql);
         sqLiteDatabase.execSQL(drop_sql);
         String create_sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
-                + "_id INTEGER PRIMARY KEY  AUTOINCREMENT NOT NULL,"
-                + "sender_name VARCHAR NOT NULL," + "receiver_name VARCHAR NOT NULL,"
-                + "avatar_path VARCHAR NOT NULL," + "chat_message_type INTEGER NOT NULL,"
-                + "send_time VARCHAR NOT NULL," + "chat_message_text VARCHAR NOT NULL,"
-                + "chat_message_photo_path VARCHAR NOT NULL," + "chat_message_video_path VARCHAR NOT NULL"
-                + ");";
+            + "_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+            + ChatMessageContent.SENDER_ACCOUNT + " INTEGER NOT NULL,"
+            + ChatMessageContent.SENDER_NAME + " VARCHAR NOT NULL,"
+            + ChatMessageContent.RECEIVER_ACCOUNT + " INTEGER NOT NULL,"
+            + ChatMessageContent.RECEIVER_NAME + " VARCHAR NOT NULL,"
+            + ChatMessageContent.UNREAD_MESSAGE_COUNT + " INTEGER NOT NULL,"
+            + ChatMessageContent.AVATAR_PATH + " VARCHAR NOT NULL,"
+            + ChatMessageContent.CHAT_MESSAGE_TYPE + " INTEGER NOT NULL,"
+            + ChatMessageContent.SEND_TIME + " INTEGER NOT NULL,"
+            + ChatMessageContent.CHAT_MESSAGE_TEXT + " VARCHAR NOT NULL,"
+            + ChatMessageContent.CHAT_MESSAGE_PHOTO_PATH + " VARCHAR NOT NULL,"
+            + ChatMessageContent.CHAT_MESSAGE_VIDEO_PATH + " VARCHAR NOT NULL"
+            + ");";
 
         LogUtil.d(TAG, "create_sql:" + create_sql);
         sqLiteDatabase.execSQL(create_sql);
@@ -133,6 +141,7 @@ public class ChatMessageDatabaseHelper extends SQLiteOpenHelper {
 
     // 往该表添加一条记录
     public long insert(ChatMessage chatMessage) {
+        LogUtil.i(TAG, "message : %s", chatMessage.toString());
         ArrayList<ChatMessage> chatMessageList = new ArrayList<>();
         chatMessageList.add(chatMessage);
         return insert(chatMessageList);
@@ -148,14 +157,17 @@ public class ChatMessageDatabaseHelper extends SQLiteOpenHelper {
             // 如果存在同样的手机号码，则更新记录
             // 不存在唯一性重复的记录，则插入新记录
             ContentValues contentValues = new ContentValues();
-            contentValues.put("sender_name", chatMessage.getSenderName());
-            contentValues.put("receiver_name", chatMessage.getReceiverName());
-            contentValues.put("avatar_path", chatMessage.getAvatarPath());
-            contentValues.put("chat_message_type", chatMessage.getChatMessageType());
-            contentValues.put("send_time", chatMessage.getSendTime());
-            contentValues.put("chat_message_text", chatMessage.getChatMessageText());
-            contentValues.put("chat_message_photo_path", chatMessage.getChatMessagePhotoPath());
-            contentValues.put("chat_message_video_path", chatMessage.getChatMessageVideoPath());
+            contentValues.put(ChatMessageContent.SENDER_ACCOUNT, chatMessage.getSenderAccount());
+            contentValues.put(ChatMessageContent.SENDER_NAME, chatMessage.getSenderName());
+            contentValues.put(ChatMessageContent.RECEIVER_ACCOUNT, chatMessage.getReceiverAccount());
+            contentValues.put(ChatMessageContent.RECEIVER_NAME, chatMessage.getReceiverName());
+            contentValues.put(ChatMessageContent.UNREAD_MESSAGE_COUNT, chatMessage.getUnreadMessageCount());
+            contentValues.put(ChatMessageContent.AVATAR_PATH, chatMessage.getAvatarPath());
+            contentValues.put(ChatMessageContent.CHAT_MESSAGE_TYPE, chatMessage.getChatMessageType());
+            contentValues.put(ChatMessageContent.SEND_TIME, chatMessage.getSendTime());
+            contentValues.put(ChatMessageContent.CHAT_MESSAGE_TEXT, chatMessage.getChatMessageText());
+            contentValues.put(ChatMessageContent.CHAT_MESSAGE_PHOTO_PATH, chatMessage.getChatMessagePhotoPath());
+            contentValues.put(ChatMessageContent.CHAT_MESSAGE_VIDEO_PATH, chatMessage.getChatMessageVideoPath());
             // 执行插入记录动作，该语句返回插入记录的行号
             result = mDatabase.insert(TABLE_NAME, "", contentValues);
             // 添加成功后返回行号，失败后返回-1
@@ -171,14 +183,17 @@ public class ChatMessageDatabaseHelper extends SQLiteOpenHelper {
     // 根据条件更新指定的表记录
     private int update(ChatMessage chatMessage, String condition) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put("sender_name", chatMessage.getSenderName());
-        contentValues.put("receiver_name", chatMessage.getReceiverName());
-        contentValues.put("avatar_path", chatMessage.getAvatarPath());
-        contentValues.put("chat_message_type", chatMessage.getChatMessageType());
-        contentValues.put("send_time", chatMessage.getSendTime());
-        contentValues.put("chat_message_text", chatMessage.getChatMessageText());
-        contentValues.put("chat_message_photo_path", chatMessage.getChatMessagePhotoPath());
-        contentValues.put("chat_message_video_path", chatMessage.getChatMessageVideoPath());
+        contentValues.put(ChatMessageContent.SENDER_ACCOUNT, chatMessage.getSenderAccount());
+        contentValues.put(ChatMessageContent.SENDER_NAME, chatMessage.getSenderName());
+        contentValues.put(ChatMessageContent.RECEIVER_ACCOUNT, chatMessage.getReceiverAccount());
+        contentValues.put(ChatMessageContent.RECEIVER_NAME, chatMessage.getReceiverName());
+        contentValues.put(ChatMessageContent.UNREAD_MESSAGE_COUNT, chatMessage.getUnreadMessageCount());
+        contentValues.put(ChatMessageContent.AVATAR_PATH, chatMessage.getAvatarPath());
+        contentValues.put(ChatMessageContent.CHAT_MESSAGE_TYPE, chatMessage.getChatMessageType());
+        contentValues.put(ChatMessageContent.SEND_TIME, chatMessage.getSendTime());
+        contentValues.put(ChatMessageContent.CHAT_MESSAGE_TEXT, chatMessage.getChatMessageText());
+        contentValues.put(ChatMessageContent.CHAT_MESSAGE_PHOTO_PATH, chatMessage.getChatMessagePhotoPath());
+        contentValues.put(ChatMessageContent.CHAT_MESSAGE_VIDEO_PATH, chatMessage.getChatMessageVideoPath());
         // 执行更新记录动作，该语句返回记录更新的数目
         return mDatabase.update(TABLE_NAME, contentValues, condition, null);
     }
@@ -195,9 +210,13 @@ public class ChatMessageDatabaseHelper extends SQLiteOpenHelper {
      */
     // 根据指定条件查询记录，并返回结果数据队列
     public ArrayList<ChatMessage> query(String condition) {
-        String sql = String.format("select sender_name,receiver_name,avatar_path,chat_message_type," +
-                "send_time,chat_message_text,chat_message_photo_path,chat_message_video_path " +
-                "from %s where %s;", TABLE_NAME, condition);
+        String sql = String.format("select " + ChatMessageContent.SENDER_ACCOUNT + ","
+            + ChatMessageContent.SENDER_NAME + "," + ChatMessageContent.RECEIVER_ACCOUNT + ","
+            + ChatMessageContent.RECEIVER_NAME + "," + ChatMessageContent.UNREAD_MESSAGE_COUNT + ","
+            + ChatMessageContent.AVATAR_PATH + "," + ChatMessageContent.CHAT_MESSAGE_TYPE + ","
+            + ChatMessageContent.SEND_TIME + "," + ChatMessageContent.CHAT_MESSAGE_TEXT + ","
+            + ChatMessageContent.CHAT_MESSAGE_PHOTO_PATH + "," + ChatMessageContent.CHAT_MESSAGE_VIDEO_PATH
+            + " from %s where %s;", TABLE_NAME, condition);
         LogUtil.d(TAG, "query sql: " + sql);
         ArrayList<ChatMessage> chatMessageList = new ArrayList<>();
         // 执行记录查询动作，该语句返回结果集的游标
@@ -205,14 +224,17 @@ public class ChatMessageDatabaseHelper extends SQLiteOpenHelper {
         // 循环取出游标指向的每条记录
         while (cursor.moveToNext()) {
             ChatMessage chatMessage = new ChatMessage();
-            chatMessage.setSenderName(cursor.getString(0));
-            chatMessage.setReceiverName(cursor.getString(1));
-            chatMessage.setAvatarPath(cursor.getString(2));
-            chatMessage.setChatMessageType(cursor.getInt(3));
-            chatMessage.setSendTime(cursor.getString(4));
-            chatMessage.setChatMessageText(cursor.getString(5));
-            chatMessage.setChatMessagePhotoPath(cursor.getString(6));
-            chatMessage.setChatMessageVideoPath(cursor.getString(7));
+            chatMessage.setSenderAccount(cursor.getInt(0));
+            chatMessage.setSenderName(cursor.getString(1));
+            chatMessage.setReceiverAccount(cursor.getInt(2));
+            chatMessage.setReceiverName(cursor.getString(3));
+            chatMessage.setUnreadMessageCount(cursor.getInt(4));
+            chatMessage.setAvatarPath(cursor.getString(5));
+            chatMessage.setChatMessageType(cursor.getInt(6));
+            chatMessage.setSendTime(cursor.getLong(7));
+            chatMessage.setChatMessageText(cursor.getString(8));
+            chatMessage.setChatMessagePhotoPath(cursor.getString(9));
+            chatMessage.setChatMessageVideoPath(cursor.getString(10));
             chatMessageList.add(chatMessage);
         }
         cursor.close(); // 查询完毕，关闭游标

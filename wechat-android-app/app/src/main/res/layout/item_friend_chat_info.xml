@@ -27,6 +27,15 @@
             android:textColor="#000000"/>
 
         <TextView
+            android:id="@+id/tv_send_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x_40"
+            android:layout_marginTop="@dimen/x_20"
+            android:layout_marginStart="@dimen/x_400"
+            android:textSize="@dimen/x_12"
+            android:textColor="#B0B0B0"/>
+
+        <TextView
             android:id="@+id/tv_friend_message"
             android:layout_width="match_parent"
             android:layout_height="@dimen/x_40"

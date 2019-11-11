@@ -18,6 +18,7 @@ import java.util.Objects;
 
 import cn.csu.software.wechat.database.content.ChatMessageContent;
 import cn.csu.software.wechat.database.helper.ChatMessageDatabaseHelper;
+import cn.csu.software.wechat.util.LogUtil;
 
 /**
  * 聊天消息 provider
@@ -46,6 +47,8 @@ public class ChatMessageProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
+
+        LogUtil.d(TAG, "provider query");
         Cursor cursor = null;
         if (mUriMatcher.match(uri) == CHAT_MESSAGE) {
             SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();

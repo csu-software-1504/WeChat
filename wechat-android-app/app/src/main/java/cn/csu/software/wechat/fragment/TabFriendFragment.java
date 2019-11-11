@@ -18,13 +18,8 @@ import android.widget.TextView;
 
 import cn.csu.software.wechat.R;
 import cn.csu.software.wechat.adapter.FriendInfoAdapter;
-import cn.csu.software.wechat.bean.FriendChatInfo;
-import cn.csu.software.wechat.constant.ConstantData;
-import cn.csu.software.wechat.database.helper.FriendChatInfoDatabaseHelper;
-import cn.csu.software.wechat.util.LogUtil;
-
-import java.io.File;
-import java.util.List;
+import cn.csu.software.wechat.entity.UserInfo;
+import cn.csu.software.wechat.data.UserInfoData;
 
 /**
  * 消息界面
@@ -34,6 +29,8 @@ import java.util.List;
  */
 public class TabFriendFragment extends Fragment {
     private static final String TAG = TabMessageFragment.class.getSimpleName();
+
+    private static String sTabName;
 
     private RecyclerView recyclerView;
 
@@ -47,16 +44,10 @@ public class TabFriendFragment extends Fragment {
 
     private TextView mTabNameTextView;
 
-    private static String mTabName;
-
-    private FriendChatInfoDatabaseHelper mDatabaseHelper;
-
-    private List<FriendChatInfo> mFriendChatInfoList;
-
     public static TabFriendFragment newInstance(String content){
         Bundle arguments = new Bundle();
         arguments.putString("content", content);
-        mTabName = content;
+        sTabName = content;
         TabFriendFragment tabContentFragment = new TabFriendFragment();
         tabContentFragment.setArguments(arguments);
         return tabContentFragment;
@@ -68,51 +59,20 @@ public class TabFriendFragment extends Fragment {
         mContext = getActivity();
         mView = inflater.inflate(R.layout.fragment_tab_friend, container, false);
         mTabNameTextView = mView.findViewById(R.id.tv_tab_name);
-        mTabNameTextView.setText(mTabName);
+        mTabNameTextView.setText(sTabName);
         adapter = new FriendInfoAdapter(mContext);
         recyclerView = mView.findViewById(R.id.recycler);
         layoutManager = new LinearLayoutManager(mContext);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        initDatabaseHelper();
-        readSQLite();
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        refreshData();
         return mView;
     }
 
-    private void initDatabaseHelper() {
-        mDatabaseHelper = FriendChatInfoDatabaseHelper.getInstance(mContext,
-            ConstantData.DATABASE_CREATE_VISION_SECOND_TIME);
-        mDatabaseHelper.openReadLink();
-        mDatabaseHelper.openWriteLink();
-    }
-
-    private void readSQLite() {
-        if (mDatabaseHelper == null) {
-            LogUtil.e(TAG, "mDatabaseHelper is null");
-            return;
-        }
-        mFriendChatInfoList = mDatabaseHelper.query(ConstantData.GLOBAL_QUERY_CONDITION);
-        if (mFriendChatInfoList.size() == 0) {
-            initData();
-        } else {
-            for (FriendChatInfo friendChatInfo : mFriendChatInfoList) {
-                adapter.addItem(friendChatInfo);
-            }
-        }
-    }
-
-    private void initData() {
-        for (int i = 0; i < ConstantData.EXAMPLE_FRIEND_NAME.length; i++) {
-            FriendChatInfo friendChatInfo = new FriendChatInfo();
-            friendChatInfo.setFriendName(ConstantData.EXAMPLE_FRIEND_NAME[i]);
-            friendChatInfo.setFriendLastMessage(ConstantData.EXAMPLE_LAST_MESSAGE_HEADER
-                + ConstantData.EXAMPLE_FRIEND_NAME[i]);
-            friendChatInfo.setFriendAvatarPath(mContext.getFilesDir().getPath()+ File.separator
-                + ConstantData.PHOTO_DIRECTORY + File.separator + ConstantData.AVATAR_DIRECTORY
-                + File.separator + ConstantData.EXAMPLE_AVATAR_NAME[i] + ConstantData.EXAMPLE_EXTENSION_NAME);
-            mDatabaseHelper.insert(friendChatInfo);
-            adapter.addItem(friendChatInfo);
+    private void refreshData() {
+        for (UserInfo userInfo : UserInfoData.getChatMessagesList()) {
+            adapter.addItem(userInfo);
         }
     }
 }

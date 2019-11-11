@@ -57,6 +57,31 @@ public class ConstantData {
     public static final int AVATAR_CIRCLE_SIZE = 6;
 
     /**
+     * extra account
+     */
+    public static final String EXTRA_ACCOUNT = "account";
+
+    /**
+     * extra remark
+     */
+    public static final String EXTRA_REMARK = "remark";
+
+    /**
+     * extra email
+     */
+    public static final String EXTRA_EMAIL = "email";
+
+    /**
+     * extra sex
+     */
+    public static final String EXTRA_SEX = "sex";
+
+    /**
+     * extra username
+     */
+    public static final String EXTRA_USERNAME = "username";
+
+    /**
      * extra receiver name
      */
     public static final String EXTRA_RECEIVER_NAME = "receiverName";
@@ -77,9 +102,24 @@ public class ConstantData {
     public static final String BUNDLE_KEY_MESSAGE = "message";
 
     /**
+     * extra user info
+     */
+    public static final String EXTRA_USER_INFO = "userInfo";
+
+    /**
+     * extra chat message
+     */
+    public static final String EXTRA_CHAT_MESSAGE = "chatMessage";
+
+    /**
      * package name
      */
     public static final String PACKAGE_NAME = "cn.csu.software.wechat";
+
+    /**
+     * PersonalInfoActivity class name
+     */
+    public static final String RECEIVED_MESSAGE_BROADCAST = "cn.csu.software.wechat.broadcast.message";
 
     /**
      * PersonalInfoActivity class name
@@ -91,6 +131,15 @@ public class ConstantData {
      */
     public static final String ACTIVITY_CLASS_NAME_CHAT = "cn.csu.software.wechat.activity.ChatActivity";
 
+    /**
+     * ChatActivity class name
+     */
+    public static final String FILES_DIR = "/data/user/0/cn.csu.software.wechat/files";
+
+    /**
+     * My Name
+     */
+    public static final String MY_NAME = "黄绩顺";
 
     /**
      * 示例初始化好友列表

@@ -21,7 +21,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.PersonalInfoActivity" />
-        <activity android:name=".activity.ChatActivity" />
+        <activity
+            android:name=".activity.ChatActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
 
 <!--        <provider-->
 <!--            android:name=".database.provider.ChatMessageProvider"-->
@@ -41,6 +43,13 @@
             android:enabled="true"
             android:exported="true" />
 
+        <provider
+            android:name=".database.provider.UserInfoProvider"
+            android:authorities="cn.csu.software.wechat.database.provider.UserInfoProvider"
+            android:enabled="true"
+            android:exported="true" />
+
+        <service android:name=".service.SocketService" />
     </application>
 
 </manifest>

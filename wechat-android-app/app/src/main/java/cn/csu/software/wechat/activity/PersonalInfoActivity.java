@@ -19,7 +19,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import cn.csu.software.wechat.R;
-import cn.csu.software.wechat.bean.FriendInfo;
+import cn.csu.software.wechat.entity.UserInfo;
 import cn.csu.software.wechat.constant.ConstantData;
 import cn.csu.software.wechat.util.BitmapUtil;
 import cn.csu.software.wechat.util.FileProcessUtil;
@@ -31,11 +31,13 @@ import cn.csu.software.wechat.util.FileProcessUtil;
  * @since 2019-10-19
  */
 public class PersonalInfoActivity extends Activity implements View.OnClickListener {
+    private static final String TAG = PersonalInfoActivity.class.getSimpleName();
+
     private RelativeLayout mSendMessageRelativeLayout;
 
     private Context mContext;
 
-    private FriendInfo mFriendInfo;
+    private UserInfo mUserInfo;
 
     private TextView mNameTextView;
 
@@ -61,8 +63,7 @@ public class PersonalInfoActivity extends Activity implements View.OnClickListen
     public void onClick(View view) {
         if (view.getId() == R.id.rl_send_message) {
             Intent intent = new Intent();
-            intent.putExtra(ConstantData.EXTRA_RECEIVER_NAME, mFriendName);
-            intent.putExtra(ConstantData.EXTRA_AVATAR_PATH, mAvatarPath);
+            intent.putExtra(ConstantData.EXTRA_USER_INFO, mUserInfo);
             intent.setClassName(ConstantData.PACKAGE_NAME, ConstantData.ACTIVITY_CLASS_NAME_CHAT);
             mContext.startActivity(intent);
         }
@@ -72,11 +73,11 @@ public class PersonalInfoActivity extends Activity implements View.OnClickListen
         mSendMessageRelativeLayout = findViewById(R.id.rl_send_message);
         mSendMessageRelativeLayout.setOnClickListener(this);
         mNameTextView = findViewById(R.id.tv_name);
-        mNameTextView.setText(mFriendInfo.getFriendName());
+        mNameTextView.setText(mUserInfo.getUsername());
         mAccountTextView = findViewById(R.id.tv_account);
-        mAccountTextView.setText(mFriendInfo.getAccount());
+        mAccountTextView.setText(String.valueOf(mUserInfo.getAccount()));
         mAvatarImageView = findViewById(R.id.iv_personal_avatar);
-        Bitmap bitmap = FileProcessUtil.getBitmap(mContext, mFriendInfo.getFriendAvatarPath());
+        Bitmap bitmap = FileProcessUtil.getBitmap(mContext, mUserInfo.getAvatarPath());
         if (bitmap != null) {
             Bitmap avatarBitmap = BitmapUtil.zoomImg(bitmap, ConstantData.AVATAR_SIZE_MINE, ConstantData.AVATAR_SIZE_MINE);
             RoundedBitmapDrawable roundedBitmapDrawable = RoundedBitmapDrawableFactory.create(mContext.getResources(), avatarBitmap);
@@ -88,11 +89,9 @@ public class PersonalInfoActivity extends Activity implements View.OnClickListen
 
     private void initIntent() {
         Intent intent = getIntent();
-        mFriendName = intent.getStringExtra(ConstantData.EXTRA_FRIEND_NAME);
-        mAvatarPath = intent.getStringExtra(ConstantData.EXTRA_AVATAR_PATH);
-        mFriendInfo = new FriendInfo();
-        mFriendInfo.setFriendName(mFriendName);
-        mFriendInfo.setFriendAvatarPath(mAvatarPath);
-        mFriendInfo.setAccount(String.valueOf(mFriendName.hashCode()));
+        Object object = intent.getSerializableExtra(ConstantData.EXTRA_USER_INFO);
+        if (object instanceof UserInfo) {
+            mUserInfo = (UserInfo) object;
+        }
     }
 }

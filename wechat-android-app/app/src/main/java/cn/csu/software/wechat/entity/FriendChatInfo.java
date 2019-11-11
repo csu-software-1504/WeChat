@@ -2,7 +2,7 @@
  * Copyright (c) 2019-2019 cn.csu.software. All rights reserved.
  */
 
-package cn.csu.software.wechat.bean;
+package cn.csu.software.wechat.entity;
 
 /**
  * 好友消息
@@ -11,11 +11,15 @@ package cn.csu.software.wechat.bean;
  * @since 2019-10-19
  */
 public class FriendChatInfo {
+    private int friendAccount;
+
     private String friendName;
 
     private String friendAvatarPath;
 
     private String friendLastMessage;
+
+    private int sendTime;
 
     public String getFriendName() {
         return friendName;

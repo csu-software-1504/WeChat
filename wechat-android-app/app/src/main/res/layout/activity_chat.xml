@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="@dimen/x_600"
     android:layout_height="match_parent"
+    android:layout_centerHorizontal="true"
     android:background="#F4F4F4">
 
         <RelativeLayout
@@ -22,11 +23,10 @@
                 android:id="@+id/tv_receiver_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x_48"
-                android:layout_marginTop="@dimen/x_34"
+                android:layout_marginLeft="@dimen/x_68"
+                android:layout_marginTop="@dimen/x_32"
                 android:textSize="@dimen/x_24"
-                android:textColor="#000000"
-                android:textStyle="bold"/>
+                android:textColor="#000000"/>
 
             <ImageButton
                 android:id="@+id/bt_point"
@@ -47,12 +47,15 @@
             android:id="@+id/recycler_chat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/x_80"/>
+            android:layout_marginTop="@dimen/x_80"
+            android:layout_above="@+id/al_chat_bottom"/>
 
         <RelativeLayout
+            android:id="@+id/al_chat_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/x_1150"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/x_12"
             android:background="#F4F4F4">
 
             <View
@@ -68,14 +71,30 @@
                 android:layout_marginTop="@dimen/x_16"
                 android:background="@mipmap/icon_voice"/>
 
-            <EditText
-                android:id="@+id/et_input"
+            <FrameLayout
                 android:layout_width="@dimen/x_400"
                 android:layout_height="@dimen/x_50"
                 android:layout_marginStart="@dimen/x_68"
                 android:layout_marginTop="@dimen/x_12"
-                android:textAlignment="center"
-                android:background="#FFFFFF"/>
+                android:background="@drawable/edit_radius">
+
+                <EditText
+                    android:id="@+id/et_input"
+                    android:layout_width="@dimen/x_380"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/x_10"
+                    android:textAlignment="inherit"
+                    android:textCursorDrawable="@drawable/color_cursor"
+                    android:background="@drawable/edit_radius"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"/>
+
+
+            </FrameLayout>
 
             <ImageButton
                 android:id="@+id/bt_expression"
